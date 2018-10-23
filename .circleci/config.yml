@@ -9,8 +9,8 @@ jobs:
       - image: circleci/node:7.10
 
     steps:
-      - run: apt-get install cowsay
-      - run: cowsay "You installed cowsay. Yay."
+      - run: sudo apt-get install cowsay
+      - run: sudo cowsay "You installed cowsay. Yay."
 
   build:
     docker:
