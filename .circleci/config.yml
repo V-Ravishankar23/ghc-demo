@@ -1,0 +1,65 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+jobs:
+  cow-install:
+    docker:
+      - image: circleci/node:7.10
+
+    steps:
+      - run:
+          command: |
+            sudo apt-get install cowsay
+            cowsay "You installed cowsay. Yay."
+
+  build:
+    docker:
+      - image: circleci/node:7.10
+
+    working_directory: ~/repo
+
+    steps:
+      - run:
+          command: |
+            cowsay "Now building React app"
+
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run: yarn test
+
+  job-wf2:
+    docker:
+      - image: circleci/node:7.10
+
+    steps:
+      - run: echo "This is a job in in workflow 2"
+
+workflows:
+  version: 2
+  workflow1:
+    jobs:
+      - cow-install
+      - build:
+          requires:
+            - cow-install
+
+  workflow2:
+    jobs:
+      - job-wf2
