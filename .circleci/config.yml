@@ -19,6 +19,7 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - run: npm i -g yarn
       - run: echo "This is the build job"
 
       - checkout
