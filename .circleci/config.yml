@@ -43,7 +43,7 @@ jobs:
 
   job-wf2:
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:latest-browsers
 
     steps:
       - run: echo "This is a job in in workflow 2"
