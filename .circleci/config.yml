@@ -4,24 +4,23 @@
 #
 version: 2.1
 jobs:
-  cow-install:
+  start-hello:
     docker:
       - image: circleci/node:7.10
 
     steps:
-      - run: sudo apt-get install cowsay
-      - run: sudo cowsay "You installed cowsay. Yay."
+      - run: echo "Welcome to CircleCI"
+      - run: echo "This project is a GitHub Checks demo"
 
   build:
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:latest-browsers
 
     working_directory: ~/repo
 
     steps:
-      - run:
-          command: |
-            cowsay "Now building React app"
+      - run: sudo npm i -g yarn
+      - run: echo "This is the build job"
 
       - checkout
 
@@ -44,7 +43,7 @@ jobs:
 
   job-wf2:
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:latest-browsers
 
     steps:
       - run: echo "This is a job in in workflow 2"
@@ -53,10 +52,10 @@ workflows:
   version: 2
   workflow1:
     jobs:
-      - cow-install
+      - start-hello
       - build:
           requires:
-            - cow-install
+            - start-hello
 
   workflow2:
     jobs:
