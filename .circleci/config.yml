@@ -3,18 +3,31 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2.1
-jobs:
-  cow-install:
+
+executors:
+
+  my_docker_executor:
     docker:
       - image: circleci/node:7.10
+      
+  my_linux_machine:
+    machine: true
+    
+  my_macos_machine:
+    macos:
+      xcode: "9.0"
+
+jobs:
+
+  cow-install:
+    executor: my_docker_executor
 
     steps:
       - run: sudo apt-get install cowsay
       - run: sudo cowsay "You installed cowsay. Yay."
 
   build:
-    docker:
-      - image: circleci/node:7.10
+    executor: my_docker_executor
 
     working_directory: ~/repo
 
@@ -43,9 +56,7 @@ jobs:
       - run: yarn test
 
   job-wf2:
-    docker:
-      - image: circleci/node:7.10
-
+    executor: my_docker_executor
     steps:
       - run: echo "This is a job in in workflow 2"
 
