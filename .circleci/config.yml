@@ -55,7 +55,17 @@ jobs:
       # run tests!
       - run: yarn test
 
-  job-wf2:
+   job1-wf1:
+    executor: my_docker_executor
+    steps:
+      - run: echo "This is a job in in workflow 1"
+   
+   job2-wf1:
+    executor: my_docker_executor
+    steps:
+      - run: echo "This is a second job in in workflow 1"
+      
+  job1-wf2:
     executor: my_docker_executor
     steps:
       - run: echo "This is a job in in workflow 2"
@@ -64,10 +74,10 @@ workflows:
   version: 2
   workflow1:
     jobs:
-      - cow-install
-      - build:
+      - job1-wf1
+      - job2-wf1:
           requires:
-            - cow-install
+            - job1-wf1
 
   workflow2:
     jobs:
